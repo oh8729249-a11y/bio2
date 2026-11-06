@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 생명과학 수행평가 - 항원 항체 반응과 전염병 예방</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Inter & Noto Sans KR) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            900: '#0c4a6e',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white; color: black; font-size: 12pt; }
+            .card-shadow { box-shadow: none !important; border: 1px solid #ccc !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header Navigation -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 no-print">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-brand-600 text-white p-2.5 rounded-xl shadow-md">
+                        <i class="fa-solid me-1 fa-microscope text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg text-slate-900 leading-tight">2026 생명과학 수행평가 웹앱</h1>
+                        <p class="text-xs text-slate-500">항원 항체 반응의 특성과 전염병 예방 및 대처</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button onclick="resetForm()" class="px-3 py-1.5 text-xs text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors flex items-center gap-1">
+                        <i class="fa-solid fa-rotate-left"></i> 초기화
+                    </button>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSf7KhZd5iR1hUjitaVmTlD0r4qgF2hMgur7kpCMTJPfWcjX1Q/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 text-xs font-semibold bg-brand-600 hover:bg-brand-700 text-white rounded-lg shadow-sm transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-paper-plane"></i> 보고서 제출
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 space-y-8">
+
+        <!-- Banner / Metadata Input Form -->
+        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-sm card-shadow relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-50 rounded-bl-full -z-10 opacity-70"></div>
+            
+            <div class="border-b border-slate-100 pb-5 mb-6">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-brand-100 text-brand-700">
+                        <i class="fa-solid fa-file-signature"></i> 탐구활동보고서
+                    </span>
+                    <div class="text-sm text-slate-500 font-medium" id="currentDateDisplay">
+                        2026년 <span id="displayMonth">__</span>월 <span id="displayDay">__</span>일
+                    </div>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-900 mt-2">항원 항체 반응의 특성과 전염병 예방 및 발생 시 대처 방안 탐구</h2>
+            </div>
+
+            <!-- Student Metadata Input Fields (제출 일시 제거됨) -->
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 no-print">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">학년</label>
+                    <div class="relative">
+                        <input type="text" id="studentGrade" placeholder="예: 2학년" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">학급</label>
+                    <div class="relative">
+                        <input type="text" id="studentClass" placeholder="예: 3반" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">번호</label>
+                    <input type="number" id="studentNum" placeholder="예: 15" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">이름</label>
+                    <input type="text" id="studentName" placeholder="성함 입력" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all">
+                </div>
+            </div>
+
+            <!-- Print Only Metadata View (일시 제거됨) -->
+            <div class="hidden print-only text-sm font-semibold text-slate-700 space-x-6 border-b pb-4">
+                <span>학급/번호: <span id="printClassNum">___학년 ___반 ___번</span></span>
+                <span>이름: <span id="printName">______</span></span>
+            </div>
+
+            <!-- Learning Objectives Box -->
+            <div class="mt-6 bg-slate-50/80 border border-slate-200/60 rounded-xl p-4">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 flex items-center gap-1.5">
+                    <i class="fa-solid fa-bullseye text-brand-600"></i> 탐구 목표
+                </h3>
+                <ul class="text-xs sm:text-sm text-slate-600 space-y-1.5 list-disc pl-5">
+                    <li>병원체의 종류와 특징을 이해하고 우리 몸의 방어 작용을 선천적 면역과 후천적 면역으로 구분하여 설명할 수 있다.</li>
+                    <li>항원-항체 반응의 특이성을 이해하고, 혈액의 응집 반응 원리를 이용하여 혈액형을 판정할 수 있다.</li>
+                    <li>백신의 종류와 작용 원리를 조사하고 질병의 예방 측면에서 백신의 필요성을 인식하여 협력적으로 소통할 수 있다.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Material Presentation Section (<자료 1>, <자료 2>) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Material 1 -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm relative flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-2.5 py-1 bg-red-100 text-red-700 text-xs font-bold rounded-md">
+                            &lt;자료 1&gt; 전염병 A
+                        </span>
+                        <span class="text-xs text-slate-400 font-mono"><i class="fa-solid fa-virus"></i> 바이러스 a</span>
+                    </div>
+                    <p class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        전염병 A는 <strong>신종 인플루엔자 바이러스 a</strong>가 변이를 일으켜 생긴 새로운 바이러스에 감염되었을 때 발생하며 호흡기를 통해 감염된다. 이 병에 걸리면 발열, 두통, 기침, 오한 증상을 나타내며 심한 경우 급성 폐렴으로 발전하기도 한다. 전염병 A는 시베리아 지역에서 처음으로 발견되었으며, 국내에서는 철새가 이동하는 겨울에 환자가 급증하였다. 
+                        <span class="block mt-2 text-xs text-slate-400 text-right">(2022년 0월 0일, 신문 발췌)</span>
+                    </p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-500 flex items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
+                    <span>특징: 높은 변이율, 호흡기 전파, 신종 바이러스</span>
+                </div>
+            </div>
+
+            <!-- Material 2 -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm relative flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-2.5 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-md">
+                            &lt;자료 2&gt; 전염병 B
+                        </span>
+                        <span class="text-xs text-slate-400 font-mono"><i class="fa-solid fa-bacteria"></i> 세균 b</span>
+                    </div>
+                    <p class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        전염병 B는 <strong>세균 b</strong>에 감염되었을 때 발생하는 질병으로, 주로 오염된 음식이나 물을 통해 감염된다. 이 병에 걸리면 급성 설사가 유발되어 심한 탈수 증세를 나타낸다. 전염병 B는 아프리카 지역에서 처음으로 발견되었으며, 국내에서는 공항에서 처음으로 환자가 발견되었다.
+                        <span class="block mt-2 text-xs text-slate-400 text-right">(2025년 0월 0일, 신문 발췌)</span>
+                    </p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-500 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-info text-blue-500"></i>
+                    <span>특징: 수인성/음식 전파, 세균성 감염, 급성 설사</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 1 Section (3 points) -->
+        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div class="flex items-center space-x-2">
+                    <span class="w-8 h-8 rounded-lg bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-sm">Q1</span>
+                    <h3 class="font-bold text-lg text-slate-900">백신 제작이 어려운 전염병과 그 까닭 (3점)</h3>
+                </div>
+                <span class="px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full text-xs font-medium">배점 3점</span>
+            </div>
+
+            <p class="text-sm text-slate-700 font-medium">
+                &lt;문제 1&gt; 전염병 A와 B 가운데 백신을 제작하기 힘든 전염병은 어느 것이고 그 까닭은 무엇인지 서술하시오.
+            </p>
+
+            <!-- Interactive Selection & Textarea -->
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-2">1) 백신을 제작하기 힘든 전염병 선택</label>
+                    <div class="flex space-x-4">
+                        <label class="flex items-center space-x-2 cursor-pointer bg-slate-50 border border-slate-200 px-4 py-2.5 rounded-xl hover:bg-slate-100 transition-colors w-1/2 sm:w-auto">
+                            <input type="radio" name="targetDisease" value="A" class="text-brand-600 focus:ring-brand-500">
+                            <span class="text-sm font-semibold text-slate-800">전염병 A (바이러스 a)</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer bg-slate-50 border border-slate-200 px-4 py-2.5 rounded-xl hover:bg-slate-100 transition-colors w-1/2 sm:w-auto">
+                            <input type="radio" name="targetDisease" value="B" class="text-brand-600 focus:ring-brand-500">
+                            <span class="text-sm font-semibold text-slate-800">전염병 B (세균 b)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">2) 까닭 서술하기 (항원-항체 반응 및 돌연변이/변이 관점)</label>
+                    <textarea id="q1Answer" rows="4" placeholder="전염병 A(또는 B)가 백신 제작이 힘든 원인을 바이러스/세균의 구조적 특징, 돌연변이, 항원-항체 특이성과 연관 지어 서술하세요." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 2 Section (38 points) -->
+        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div class="flex items-center space-x-2">
+                    <span class="w-8 h-8 rounded-lg bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-sm">Q2</span>
+                    <h3 class="font-bold text-lg text-slate-900">전염병 대응 직업군 5가지와 역할 이유 (38점)</h3>
+                </div>
+                <span class="px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full text-xs font-medium">배점 38점</span>
+            </div>
+
+            <div class="bg-amber-50/80 border border-amber-200 rounded-xl p-4 text-xs sm:text-sm text-amber-900 flex items-start space-x-2">
+                <i class="fa-solid fa-triangle-exclamation text-amber-600 text-base mt-0.5"></i>
+                <div>
+                    <strong class="font-bold">작성 조건 및 규칙:</strong>
+                    <p class="mt-0.5 text-amber-800">
+                        전염병 확산 방지, 치료와 예방, 사회적 부작용 감소를 위해 필요한 직업군 5개와 선택 이유를 기술하세요. 
+                        <span class="font-bold underline text-red-600 decoration-red-400">(단, 의사, 간호사, 약사는 제외함)</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Warning Notification Alert -->
+            <div id="jobWarning" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold animate-pulse flex items-center justify-between">
+                <span><i class="fa-solid fa-circle-xmark me-2"></i> 제외 대상 직업(의사, 간호사, 약사)이 입력되어 있습니다. 다른 직업군을 선택해 주세요!</span>
+            </div>
+
+            <!-- Dynamic 5 Job Card Inputs -->
+            <div class="space-y-4" id="jobInputsContainer">
+                <!-- Javascript will generate 5 interactive job blocks -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12 py-6 text-center text-xs text-slate-500 no-print">
+        <p>2026학년도 생명과학 탐구활동 수행평가 디지털 마이크로 웹앱</p>
+        <p class="mt-1 text-slate-400">항원 항체 반응의 특성과 전염병 예방 및 발생 시 대처 방안 모듈</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Restricted Jobs Condition Check (Problem 2)
+        const restrictedJobs = ["의사", "간호사", "약사"];
+
+        // Initialize UI Elements
+        document.addEventListener('DOMContentLoaded', () => {
+            setCurrentDate();
+            renderJobInputs();
+            setupEventListeners();
+        });
+
+        // Set Current Date automatically
+        function setCurrentDate() {
+            const today = new Date();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+
+            document.getElementById('displayMonth').innerText = month;
+            document.getElementById('displayDay').innerText = day;
+        }
+
+        // Render 5 Job Input Cards
+        function renderJobInputs() {
+            const container = document.getElementById('jobInputsContainer');
+            container.innerHTML = '';
+
+            for (let i = 1; i <= 5; i++) {
+                const jobCard = document.createElement('div');
+                jobCard.className = "bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3 transition-all hover:border-brand-300";
+                jobCard.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                            <span class="w-5 h-5 rounded-full bg-brand-600 text-white flex items-center justify-center text-[10px]">${i}</span>
+                            직업군 ${i}
+                        </span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                            <input type="text" id="jobTitle_${i}" placeholder="직업명 입력" class="job-title-input w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all font-semibold" oninput="validateJobs()">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <input type="text" id="jobReason_${i}" placeholder="해당 직업이 전염병 예방/대처에 필요한 이유" class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all">
+                        </div>
+                    </div>
+                `;
+                container.appendChild(jobCard);
+            }
+        }
+
+        // Setup Event Listeners for Syncing Print View
+        function setupEventListeners() {
+            document.getElementById('studentGrade').addEventListener('input', updatePrintHeader);
+            document.getElementById('studentClass').addEventListener('input', updatePrintHeader);
+            document.getElementById('studentNum').addEventListener('input', updatePrintHeader);
+            document.getElementById('studentName').addEventListener('input', updatePrintHeader);
+        }
+
+        function updatePrintHeader() {
+            const grade = document.getElementById('studentGrade').value || '___학년';
+            const cls = document.getElementById('studentClass').value || '___반';
+            const num = document.getElementById('studentNum').value || '___';
+            const name = document.getElementById('studentName').value || '______';
+            document.getElementById('printClassNum').innerText = `${grade} ${cls} ${num}번`;
+            document.getElementById('printName').innerText = name;
+        }
+
+        // Check restricted jobs (Doctor, Nurse, Pharmacist)
+        function validateJobs() {
+            const titleInputs = document.querySelectorAll('.job-title-input');
+            let hasRestricted = false;
+
+            titleInputs.forEach(input => {
+                const val = input.value.trim();
+                if (restrictedJobs.some(restricted => val.includes(restricted))) {
+                    hasRestricted = true;
+                    input.classList.add('border-red-500', 'bg-red-50');
+                } else {
+                    input.classList.remove('border-red-500', 'bg-red-50');
+                }
+            });
+
+            const warningEl = document.getElementById('jobWarning');
+            if (hasRestricted) {
+                warningEl.classList.remove('hidden');
+            } else {
+                warningEl.classList.add('hidden');
+            }
+
+            return !hasRestricted;
+        }
+
+        // Reset All Form Fields
+        function resetForm() {
+            document.getElementById('studentGrade').value = '';
+            document.getElementById('studentClass').value = '';
+            document.getElementById('studentNum').value = '';
+            document.getElementById('studentName').value = '';
+            document.getElementById('q1Answer').value = '';
+            
+            const radios = document.querySelectorAll('input[name="targetDisease"]');
+            radios.forEach(r => r.checked = false);
+
+            renderJobInputs();
+            document.getElementById('jobWarning').classList.add('hidden');
+            setCurrentDate();
+            updatePrintHeader();
+        }
+    </script>
+</body>
+</html>
